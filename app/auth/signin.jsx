@@ -78,7 +78,7 @@ useEffect(() => {
             className="flex-1 justify-evenly items-center"
             style={[{backgroundColor:color.background}]}
           >
-    <SafeAreaView>
+    <ScrollView>
     <View className={`flex-1 items-center`} style={{backgroundColor: color.background}}>
     <Image
                 className="mb-[-100] mt-12"
@@ -89,65 +89,53 @@ useEffect(() => {
         <View>
         
         <Text className="text-7xl font-bold tracking-[2px] text-center uppercase pt-24 pb-2 mb-[-40]" style={{color:color.black}}>the </Text>
-        <Text className={`text-7xl text-center tracking-[4px] mb-[-25]`} style={{ fontFamily: 'cookie',color:color.mediumgreen }}>
+        <Text className={`text-7xl text-center tracking-[4px] mb-[-25]`} style={{ fontFamily: 'cookie',color:color.blue }}>
                 snack
         </Text>  
         <Text className="text-7xl font-bold tracking-[2px] text-center uppercase  pb-2 mb-[-20]" style={{color:color.black}}>shack </Text>
-        <Text className="text-2xl uppercase font-semibold pb-2 text-center mb-[100]" style={{color:color.lightgreen}}>Connectez-vous</Text>
+        <Text className="text-2xl uppercase font-semibold pb-2 text-center mb-[90]" style={{color:color.orange}}>Connectez-vous</Text>
 
         <View>
-                  <View className="flex-row items-center">
-                    <TextInput
-                      className="justify-center py-5 rounded-lg text-center" 
-                      style={[{backgroundColor:color.lightgreen, color:color.black, width:WIDTH_BTN},alertIdentifier ? {paddingRight:56,borderWidth:2,borderColor:colors.alert} : {}]}
-                      onChangeText={(item) => {setForm({...form,usernameOrEmail : item})}}
-                      placeholder="Entrez l'email"
-                      placeholderTextColor={color.darkgreen}
-                      value={form.usernameOrEmail}
-                      />
-                    {alertIdentifier ? <Icon className="absolute right-4" name="exclamation-triangle" size={30} color={colors.alert} />: null}
-                  </View>
+        <View className="border-2 rounded-lg mb-8" style={{ color: color.darkgreen }}>
+              <View className="absolute z-10 -top-2.5 left-4 w-auto px-1" style={{ backgroundColor: color.background, color: color.blue }}>
+                <Text className="w-auto" style={{ color: color.orange}}>Courriel</Text>
+              </View>
+              <TextInput
+                className="justify-center py-4 rounded-lg text-center"
+                style={{ width: WIDTH_BTN, color: color.orange, backgroundColor: color.background }}
+                placeholder="Entrez votre courriel"
+                placeholderTextColor={color.blue}
+                value={form.email}
+                onChangeText={(text) => setForm({ ...form, email: text })}
+              />
+            </View>
                   
-                  <View className="justify-end items-center mb-8"  style={{width:WIDTH_BTN}} >
-                      <Link href="./recovery">
-                          <Text style={{color:color.darkgreen}}>Email oublié?</Text>
-                      </Link>
-                  </View>
-                  {alertIdentifier ? <Text className="pt-1" style={{color:color.pink}}>Email : Ce champs doit être rempli</Text> : null}
+</View>
+
+                  <View className="border-2 rounded-lg mb-8" style={{color: color.background }}>
+                <View className="absolute z-10 -top-2.5 left-4 w-auto px-1" style={{backgroundColor:color.background, color: color.orange}}><Text className="w-auto" style={{color: color.orange }}> Mot de passe  </Text>
                 </View>
 
-                <View>
-                  <View className="flex-row items-center" >
-                    <TextInput
-                        className="justify-center py-5 rounded-lg text-center" 
-                        style={[{width:WIDTH_BTN,backgroundColor:color.lightgreen, color:color.black},alertMDP ? {paddingRight:56,borderWidth:2,borderColor:colors.alert} : {}]}
-                        onChangeText={(item) => {setForm({...form,password : item})}}
-                        placeholder='Entrez le mot de passe'
-                        placeholderTextColor={color.darkgreen}
+                        <TextInput
+                        className="justify-center py-4 rounded-lg text-center "
+                        style={[{width: WIDTH_BTN,  color: color.darkgreen, backgroundColor: color.background}]}
+                        placeholder='Entrez votre mot de passe '
+                        placeholderTextColor={color.blue}
                         value={form.password}
-                      />
-                    {alertMDP ? <Icon name="exclamation-triangle" size={30} color={colors.alert} style={{ position: 'absolute',right: 15, }}/>: null}
+                        />
                   </View>
-                  <View className="justify-start items-center mb-[50]"  style={{width:WIDTH_BTN}} >
-                    <Link href="./recovery">
-                        <Text style={{color:color.darkgreen}}>Mot de passe oublié?</Text>
-                    </Link>
-                  </View>
-                  {alertMDP? <Text className="pt-1" style={{color:colors.alert}}>Mot de passe : Ce champs doit être rempli</Text> : null}
-                
-                </View>
                 <View className="pt-4">
-                  <TouchableOpacity className="py-4 rounded-xl px-7" style={[{width:WIDTH_BTN,backgroundColor:color.darkgreen}]} onPress={submit}>
+                  <TouchableOpacity className="py-4 rounded-xl px-7 mb-6" style={[{width:WIDTH_BTN,backgroundColor:color.blue}]} onPress={submit}>
                       <Text className="text-center font-medium text-2xl" style={[{color:color.background}]}>Se connecter</Text>
                   </TouchableOpacity>
                 </View>
 
         </View>
-        <Text class="text-3xl font-bold underline" style={{color:color.darkgreen}}>Si vous n'avez pas de compte, <Link style={{color:color.black}} className="underline" href="./signup">Cliquez-ici</Link></Text>
-        <Text class="text-3xl font-bold underline" style={{color:color.darkgreen}}>Si vous n'avez pas de compte, <Link style={{color:color.black}} className="underline" href="../[user]/profil">profil</Link></Text>
+        <Text class="text-3xl font-bold underline" style={{color:color.orange}}>Si vous n'avez pas de compte, <Link style={{color:color.black}} className="underline" href="./signup">Cliquez-ici</Link></Text>
+        <Text class="text-3xl font-bold underline" style={{color:color.orange}}>Si vous n'avez pas de compte, <Link style={{color:color.black}} className="underline" href="../[user]/profil">profil</Link></Text>
 
     </View>
-    </SafeAreaView>
+    </ScrollView>
     </KeyboardAvoidingView>
   )
 }
