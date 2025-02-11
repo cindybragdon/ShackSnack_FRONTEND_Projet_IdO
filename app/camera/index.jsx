@@ -1,6 +1,7 @@
 import { CameraView , useCameraPermissions } from 'expo-camera';
 import { useState, useRef } from 'react';
 import {useRouter } from "expo-router"
+import { color } from '../../assets/color'
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -9,6 +10,8 @@ export default function App() {
   const [permission, requestPermission] = useCameraPermissions();
   const router = useRouter();
   const cameraRef = useRef(null); 
+
+
   if (!permission) {
     return <View />;
   }
@@ -32,18 +35,18 @@ export default function App() {
         console.log(photoData.uri);
   
         await AsyncStorage.setItem('photo', photoData.uri);
-        router.push('../[user]/profile');
+        router.push('../[user]/profil');
       }
     };
   return (
     <View className="flex-1">
       <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
-        <View className="flex-1 justify-end">
+        <View className="flex-1 justify-end items-center">
           <View className="flex-row justify-end items-center mb-32">
-            <TouchableOpacity className="w-32 h-32 bg-black rounded-full items-center justify-center mx-10" onPress={toggleCameraFacing}>
-              <Text style={styles.text}>Flip</Text>
+            <TouchableOpacity style={{backgroundColor: color.orange}}className="w-32 h-32 bg-black rounded-full items-center justify-center mx-10" onPress={toggleCameraFacing}>
+              <Text className="text-white">Flip</Text>
             </TouchableOpacity>
-            <TouchableOpacity className="w-32 h-32 bg-black rounded-full items-center justify-center mx-10" onPress={(takePictureAsync)=>{takeAPhoto(takePictureAsync)}}>
+            <TouchableOpacity style={{backgroundColor: color.orange}}className="w-32 h-32 bg-black rounded-full items-center justify-center mx-10" onPress={(takePictureAsync)=>{takeAPhoto(takePictureAsync)}}>
               <Text className="text-white" >Take a photo</Text>
             </TouchableOpacity>
           </View>
@@ -70,11 +73,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: 'transparent',
     margin: 64,
-  },
-  
-  text: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
-  },
+  }
 });
