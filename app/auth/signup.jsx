@@ -3,6 +3,9 @@ import { color } from '../../assets/color';
 import React, { useState } from 'react';
 import { Link, useRouter } from 'expo-router';
 import { useTheme } from "../../contexts/ThemeContext"
+import { signUp } from '../../lib/axios';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+
 
 const WIDTH_BTN = Dimensions.get('window').width - 56;
 
@@ -27,7 +30,7 @@ const Signup = () => {
 
   const submit = async () => {
 
-    if(form.username == "" || form.password == "" || form.email == ""){
+    if(form.username == "" || form.password == "" || form.email == "" || form.firstname == "" || form.lastname == "" ) {
       if(form.username == ""){
           setAlertUsername(true)
       }
@@ -56,8 +59,8 @@ const Signup = () => {
         const result = await signUp(form.firstname, form.lastname,form.username, form.email, form.password)
         
         setLoading(false)
-        setForm({username:"", email:"", password:""})
-        router.push(`../${result.id}/profile`)
+        setForm({username:"", email:"", password:"", firstname:"", lastname:""})
+        router.push(`../${result.id}/profil`)
 
     } catch(error){
         setLoading(false)
@@ -128,6 +131,8 @@ const Signup = () => {
                 value={form.username}
                 onChangeText={(text) => setForm({ ...form, username: text })}
               />
+              {alertUsername ? <Icon className="absolute right-4 p-3" name="exclamation-triangle" size={20} color={colors.orange} />: null}
+
             </View>
 
             <View className="border-2 rounded-lg mb-8" style={{ color: color.orange }}>
@@ -142,6 +147,8 @@ const Signup = () => {
                 value={form.email}
                 onChangeText={(text) => setForm({ ...form, email: text })}
               />
+              { alertEmail ? <Icon className="absolute right-4 p-3" name="exclamation-triangle" size={20} color={colors.orange} />: null}
+
             </View>
 
             <View className="border-2 rounded-lg mb-8" style={{ color: colors.orange }}>
@@ -157,12 +164,14 @@ const Signup = () => {
                 value={form.password}
                 onChangeText={(text) => setForm({ ...form, password: text })}
               />
+              {alertMDP ? <Icon className="absolute right-4 p-3" name="exclamation-triangle" size={20} color={colors.orange} />: null}
+
             </View>
 
             <TouchableOpacity 
               className="py-4 rounded-xl px-7 mt-[40] mb-6" 
               style={{ width: WIDTH_BTN, backgroundColor: colors.blue }}
-              onPress={submit}
+              onPress={() => submit()}
             >
               <Text className="text-center font-medium text-2xl" style={{ color: colors.background }}>
                 Créez le compte

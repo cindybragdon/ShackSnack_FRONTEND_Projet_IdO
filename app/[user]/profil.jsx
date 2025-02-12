@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react'
 import { color } from '../../assets/color'
 import { useRouter } from 'expo-router';
 import { useTheme } from "../../contexts/ThemeContext"
-
+import { getUser } from '../../lib/axios';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 const WIDTH_BTN = Dimensions.get('window').width -56;
@@ -20,12 +21,66 @@ const profil = () => {
     const { theme } = useTheme()
     const colors = color[theme]
 
+  //   useEffect(() => {
+  //     const loadData = async () => {
+  //       try {
+  //         const profileData = await getUser();
+  //         if (!profileData) throw new Error('Failed fetching data -> no Data');
+  //         setUsername(profileData.username);
+  //         setEmail(profileData.email);
+  //         const photo = await AsyncStorage.getItem('photo');
+  //         if (photo) setProfilePic(photo); 
+  //       } catch (error) {
+  //         console.log('Profile: Failed loading profile data:', error);
+  //         router.push("/auth/signin");
+  //       }
+  //     };
+    
+  //   loadData();
+  // });
+
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const loadProfilePic = async () => {
+        const photo = await AsyncStorage.getItem('photo');
+        if (photo) setProfilePic(photo); 
+      };
+
+      loadProfilePic(); 
+
+      return () => {};
+    }, [])
+  );
 
 
     const handleCameraPress = () => {
         router.push("../camera");
       };
 
+
+      const handleSaveUsername = async () => {
+        try {
+          const profileData = await getUser();
+    
+          console.log(profileData)
+          
+          if (profileData.username !== username) {
+            await updateUsername(profileData.userId, username);
+            
+            setIsEditing(false); 
+            setMessageVisible(true); 
+            setIsEditSuccess(true); 
+          } else {
+            setIsEditSuccess(false); 
+            setMessageVisible(true); 
+          }
+        } catch (error) {
+          setIsEditSuccess(false); 
+          setMessageVisible(true); 
+          console.error('Failed to update username:', error);
+        }
+      };
 
   return (
 
@@ -73,9 +128,15 @@ const profil = () => {
           <View className="mb-[50]" style={{ padding: 20,  }}>
           <View style={{ flexDirection: '', justifyContent: 'space-between', marginBottom: 10 }}>
           
-          <TouchableOpacity className={"py-2 pb-4 px-8"} style={[{width:WIDTH_BTN}]} onPress={() => setIsEditing(!isEditing)}>
+          <TouchableOpacity className={"py-2 pb-4 px-8 "} style={[{width:WIDTH_BTN}]} onPress={() => setIsEditing(!isEditing)}>
                 <Text className="text-center font-xl text-2xl p-3 rounded-xl " style={[{backgroundColor: colors.blue, color: colors.background}] }> Modifier vos info</Text>
             </TouchableOpacity>
+           {isEditing && (
+          <TouchableOpacity className={"py-2 pb-4 px-8 "} onPress={handleSaveUsername} style={[{  width: WIDTH_BTN}]}>
+            <Text className="text-center font-xl text-2xl p-3 rounded-xl " style={{ color: colors.background_w , backgroundColor: colors.blue}}>Save</Text>
+          </TouchableOpacity>
+        )}
+
             <TouchableOpacity className={"py-2 pb-4 px-8"} style={[{width:WIDTH_BTN}]} onPress={() => { }}>
                 <Text className="text-center font-xl text-2xl p-3 rounded-xl " style={[{backgroundColor: colors.blue, color: colors.background}] }> Supprimer votre compte</Text>
             </TouchableOpacity>

@@ -34,9 +34,13 @@ const Layout = () => {
                 <Drawer.Screen name="auth" options={{title:"Signin", headerShown:false, drawerItemStyle: { display: 'none' }  }}/>
                 <Drawer.Screen name="[user]/profil" options={{title:"Profil"}}/>
                 <Drawer.Screen name="[user]/setting" options={{title:"Settings"}}/>
+                <Drawer.Screen name="[user]/addPet" options={{title:"Ajouter un animal"}}/>
+                <Drawer.Screen name="[user]/animalProfil" options={{title:"Profil de vos animaux"}}/>
+                <Drawer.Screen name="[user]/myAnimal" options={{title: "Vos animaux"}}/>
                 <Drawer.Screen name="camera/index" options={{headerShown:false, drawerItemStyle: { display: 'none' }}}/>
                 <Drawer.Screen name="camera1/index" options={{headerShown:false, drawerItemStyle: { display: 'none' }}}/>
-  
+                <Drawer.Screen name="[user]/statsScreen" options={{title:"Graphique"}}/>
+
             </Drawer>
           </GestureHandlerRootView>
       </>

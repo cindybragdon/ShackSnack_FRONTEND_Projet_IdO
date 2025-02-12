@@ -5,7 +5,7 @@ import { useRouter, Link } from 'expo-router'
 import { color } from '../../assets/color'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from "../../contexts/ThemeContext"
-import { signIn } from '../../lib/axios';
+import { signIn } from '../../lib/axios.js';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 
@@ -19,6 +19,9 @@ const [alertMDP, setAlertMDP] = useState(false)
 const [form, setForm] = useState({usernameOrEmail:"",password:""})
 const { theme } = useTheme()
 const colors = color[theme]
+
+const [loading, setLoading] = useState(false);
+const [msgErreur, setMsgErreur] = useState("");
 
 useEffect(() => {
     async function loadFont() {
@@ -54,7 +57,8 @@ useEffect(() => {
   
     try{
         setLoading(true)
-        const result = await signIn(form.usernameOrEmail,form.password)
+        const result = await signIn(form.usernameOrEmail,form.password);
+        console.log(result);
         setLoading(false)
         setForm({usernameOrEmail:"",password:""})
         router.push(`../${result.id}/profil`)
@@ -135,7 +139,7 @@ useEffect(() => {
                   </View>
                   
                 <View className="pt-4">
-                  <TouchableOpacity className="py-4 rounded-xl px-7 mb-6" style={[{width:WIDTH_BTN,backgroundColor:colors.blue}]} onPress={submit}>
+                  <TouchableOpacity className="py-4 rounded-xl px-7 mb-6" style={[{width:WIDTH_BTN,backgroundColor:colors.blue}]} onPress={() => submit()}>
                       <Text className="text-center font-medium text-2xl" style={[{color:colors.background}]}>Se connecter</Text>
                   </TouchableOpacity>
                 </View>
