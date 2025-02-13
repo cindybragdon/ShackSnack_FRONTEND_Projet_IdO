@@ -1,11 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, ScrollView, Text } from "react-native";
 import { BarChart, LineChart, PieChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
+import { getAllFeedingLogsOfUser, getAnimals, getUser } from "../../lib/axios";
 
 const screenWidth = Dimensions.get("window").width;
 
 const StatsScreen = () => {
+
+
+  const [dataFeeding,setFeedingData] = useState({});
+
+  const [user, setUSer] = useState({});
+
+  const [animals, setAnimals] = useState([]);
+
+
+  useEffect(() => {
+    async function loadFeedingLogDataOfUser() {
+      try {
+        const user = await getUser();
+        console.log("User:", user);
+        setUSer(user);
+  
+        const feedingData = await getAllFeedingLogsOfUser(user.id);
+        console.log("Feeding Data:", feedingData);
+        setFeedingData(feedingData || []);
+  
+        const fetchedAnimals = await getAnimals();
+        console.log("Animals:", fetchedAnimals);
+        setAnimals(fetchedAnimals || []);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+  
+    loadFeedingLogDataOfUser();
+  }, []);
+  
+
+    console.log("data feeding : ");
+    console.log(dataFeeding);
+
+    console.log("animals :")
+    console.log(animals)
   return (
     <ScrollView className="flex-1 p-4 bg-gray-100">
       <Text className="text-lg font-bold text-center mb-2">
@@ -23,7 +61,7 @@ const StatsScreen = () => {
               { data: [2, 3, 4, 3, 4, 2, 5], color: (opacity = 1) => `rgba(54, 162, 235, ${opacity})`, strokeWidth: 2 },
               { data: [4, 3, 5, 2, 4, 3, 6], color: (opacity = 1) => `rgba(255, 206, 86, ${opacity})`, strokeWidth: 2 },
             ],
-            legend: ["Albert", "Violette", "Léopol"], 
+            legend: animals.length ? animals.map(animal => animal.name) : ["Aucun animal"], 
           }}
           width={screenWidth - 56}
           height={220}
