@@ -37,7 +37,7 @@ const myAnimal = () => {
                     {animal.myAnimal.map((plant, index) => renderItem({ item: animal, index }))}
                 </ScrollView>
                     ) : (
-                <Text style={{ color: colors.secondaryText }}>Vous n'avez pas encore ajouter d'animal a votre liste.</Text>
+                <Text style={{ color: colors.orange }}>Vous n'avez pas encore ajouter d'animal a votre liste.</Text>
                     )}
                 <TouchableOpacity>
                     <Text className="text-center rounded-[12] py-[12] text-2xl"style={{backgroundColor: colors.orange, width: WIDTH_BTN}} onPress={()=> router.push('./[user]/addPet')}> Ajouter un animal</Text>

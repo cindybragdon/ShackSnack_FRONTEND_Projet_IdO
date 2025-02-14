@@ -40,7 +40,7 @@ const Layout = () => {
                 <Drawer.Screen name="camera/index" options={{headerShown:false, drawerItemStyle: { display: 'none' }}}/>
                 <Drawer.Screen name="camera1/index" options={{headerShown:false, drawerItemStyle: { display: 'none' }}}/>
                 <Drawer.Screen name="[user]/statsScreen" options={{title:"Graphique"}}/>
-
+                <Drawer.Screen name="[user]/Feed" options={{title:"Feed!"}}/>
             </Drawer>
           </GestureHandlerRootView>
       </>
