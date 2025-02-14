@@ -1,30 +1,95 @@
-import React from "react";
-import { View, ScrollView, Text } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, ScrollView, Text, ActivityIndicator } from "react-native";
 import { BarChart, LineChart, PieChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
+import { getAllFeedingLogsOfUser, getAnimals, getUser } from "../../lib/axios";
+import moment from "moment";
+import "moment/locale/fr";
 
 const screenWidth = Dimensions.get("window").width;
 
 const StatsScreen = () => {
+  const [feedingLogs, setFeedingLogs] = useState(null);
+  const [user, setUser] = useState(null);
+  const [animals, setAnimals] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadFeedingLogDataOfUser() {
+      try {
+        const userData = await getUser();
+        setUser(userData);
+
+        const feedingData = await getAllFeedingLogsOfUser(userData.id);
+        setFeedingLogs(feedingData || []);
+
+        const fetchedAnimals = await getAnimals();
+        setAnimals(fetchedAnimals || []);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des données :", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadFeedingLogDataOfUser();
+  }, []);
+
+  if (isLoading || !feedingLogs || !animals) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <ActivityIndicator size="large" color="#0000ff" />
+        <Text>Chargement des données...</Text>
+      </View>
+    );
+  }
+
+  // Transformation des logs en données exploitables
+  const processFeedingData = () => {
+    const last7Days = [];
+    const feedingPerDay = {};
+
+    for (let i = 6; i >= 0; i--) {
+      const day = moment().subtract(i, "days").format("ddd");
+      last7Days.push(day);
+      feedingPerDay[day] = {};
+    }
+
+    feedingLogs.forEach((log) => {
+      const feedingDay = moment(log.feeding_date).format("ddd");
+      if (last7Days.includes(feedingDay)) {
+        if (!feedingPerDay[feedingDay][log.animalId]) {
+          feedingPerDay[feedingDay][log.animalId] = 0;
+        }
+        feedingPerDay[feedingDay][log.animalId] += log.feeding_quantity;
+      }
+    });
+
+    // Couleurs du PieChart pour harmonisation
+    const colors = ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"];
+
+    const datasets = animals.map((animal, index) => ({
+      data: last7Days.map((day) => feedingPerDay[day][animal._id] || 0),
+      color: (opacity = 1) => `${colors[index % colors.length]}${Math.round(opacity * 255).toString(16)}`, 
+      strokeWidth: 2,
+    }));
+
+    return { labels: last7Days, datasets, legend: animals.map((a) => a.name) };
+  };
+
+  const feedingDataProcessed = processFeedingData();
+
   return (
     <ScrollView className="flex-1 p-4 bg-gray-100">
       <Text className="text-lg font-bold text-center mb-2">
         Les <Text className="text-red-500">chat</Text>istiques du statisti<Text className="text-blue-500">chien</Text>
       </Text>
 
-      {/* Graphique 1 - Comparaison de l’alimentation de plusieurs animaux */}
+      {/* Graphique 1 - Nombre de gâteries par jour */}
       <View className="mb-8 bg-white p-4 rounded-lg shadow-md">
         <Text className="text-lg font-bold text-center mb-2">Qui est le plus gourmand?</Text>
         <LineChart
-          data={{
-            labels: ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"],
-            datasets: [
-              { data: [3, 2, 3, 4, 2, 5, 4], color: (opacity = 1) => `rgba(255, 99, 132, ${opacity})`, strokeWidth: 2 },
-              { data: [2, 3, 4, 3, 4, 2, 5], color: (opacity = 1) => `rgba(54, 162, 235, ${opacity})`, strokeWidth: 2 },
-              { data: [4, 3, 5, 2, 4, 3, 6], color: (opacity = 1) => `rgba(255, 206, 86, ${opacity})`, strokeWidth: 2 },
-            ],
-            legend: ["Albert", "Violette", "Léopol"], 
-          }}
+          data={feedingDataProcessed}
           width={screenWidth - 56}
           height={220}
           yAxisSuffix=" gâteries"
