@@ -5,6 +5,7 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { useRouter } from 'expo-router';
 import { WebView } from 'react-native-webview';
 import AsyncStorage from '@react-native-async-storage/async-storage';  // Import AsyncStorage
+import { useCurrentDeepLink } from '../../utils/useDeepLink';
 
 const WIDTH_BTN = Dimensions.get('window').width - 56;
 
@@ -14,6 +15,10 @@ const Feed = () => {
     const colors = color[theme];
 
     const [raspberryIp, setRaspberryIp] = useState("");
+
+    const deepLink = useCurrentDeepLink();
+
+    console.log(deepLink);
 
     // Charger l'IP depuis AsyncStorage au premier rendu
     useEffect(() => {

@@ -43,6 +43,12 @@
         }
       ],
       "expo-font"
-    ]
+    ],
+    "scheme": "snacktest",
+    "extra": {
+      "eas": {
+        "projectId": "0054c028-e370-403a-9675-88390f2abc7c"
+      }
+    }
   }
 }
