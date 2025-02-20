@@ -16,7 +16,7 @@ const  WIDTH_BTN = Dimensions.get('window').width - 56
 const [fontLoaded, setFontLoaded] = useState(false);
 const [alertIdentifier, setAlertIdentifier] = useState(false)
 const [alertMDP, setAlertMDP] = useState(false)
-const [form, setForm] = useState({usernameOrEmail:"",password:""})
+const [form, setForm] = useState({usernameOrEmail:"kiki@koko.com",password:"abc123"})
 const { theme } = useTheme()
 const colors = color[theme]
 
@@ -132,6 +132,7 @@ useEffect(() => {
                         placeholder='Entrez votre mot de passe '
                         placeholderTextColor={colors.blue}
                         value={form.password}
+                        secureTextEntry
                         onChangeText={(text) => setForm({ ...form, password: text })}
                         />
                       {alertMDP ? <Icon className="absolute right-4 p-3" name="exclamation-triangle" size={20} color={colors.orange} />: null}
@@ -146,7 +147,6 @@ useEffect(() => {
 
         </View>
         <Text class="text-3xl font-bold underline" style={{color:colors.orange}}>Si vous n'avez pas de compte, <Link style={{color:colors.black}} className="underline" href="./signup">Cliquez-ici</Link></Text>
-        <Text class="text-3xl font-bold underline" style={{color:colors.orange}}>Si vous n'avez pas de compte, <Link style={{color:colors.black}} className="underline" href="../[user]/profil">profil</Link></Text>
     </View>
     </ScrollView>
     </KeyboardAvoidingView>
