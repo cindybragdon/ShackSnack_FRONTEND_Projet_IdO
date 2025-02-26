@@ -34,8 +34,8 @@ export default function App() {
         console.log(photoData.uri);
   
         // Save the photo URI to AsyncStorage
-        await AsyncStorage.setItem('photoPlante', photoData.uri);
-        router.push('../[user]/ProfilPlante');
+        await AsyncStorage.setItem('photoAnimal', photoData.uri);
+        router.push('../[user]/animalProfil');
       }
     };
   return (
