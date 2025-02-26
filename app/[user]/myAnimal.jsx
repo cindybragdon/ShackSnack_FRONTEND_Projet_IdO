@@ -1,10 +1,10 @@
 import { View, Text, Dimensions, TouchableOpacity, FlatList } from 'react-native';
 import { useTheme } from '../../contexts/ThemeContext';
-import { useRouter , useFocusEffect} from 'expo-router';
+import { useRouter, useFocusEffect } from 'expo-router';
 import { color } from '../../assets/color';
 import { getAnimals } from '../../lib/axios';
 import { Font } from 'expo-font'; 
-import React, { useState, useEffect , useCallback} from 'react'
+import React, { useState, useEffect, useCallback } from 'react';
 
 const MyAnimal = () => {
     const { theme } = useTheme();
@@ -26,40 +26,35 @@ const MyAnimal = () => {
         loadFont();
     }, []);
 
-            const fetchAnimals = async () => {
-                try {
-                    const userAnimals = await getAnimals();
-                    
-                    if (userAnimals) {
-                        setAnimals(userAnimals);
-                        if (userAnimals.length > 0) {
-                            setSelectedAnimal(userAnimals[0]._id);
-                        }
-                    }
-                } catch (error) {
-                    console.error("Erreur lors du chargement des animaux :", error);
+    const fetchAnimals = async () => {
+        try {
+            const userAnimals = await getAnimals();
+            if (userAnimals) {
+                setAnimals(userAnimals);
+                if (userAnimals.length > 0) {
+                    setSelectedAnimal(userAnimals[0]._id);
                 }
-            };
-    
-            useFocusEffect(
-                React.useCallback(() => {
-                  fetchAnimals();  
-    
-    
+            }
+        } catch (error) {
+            console.error("Erreur lors du chargement des animaux :", error);
+        }
+    };
+
+    useFocusEffect(
+        React.useCallback(() => {
+            fetchAnimals();  
         }, [])
     );
-    
 
     const renderAnimalItem = ({ item }) => (
         <TouchableOpacity
             style={{
                 backgroundColor: selectedAnimal === item._id ? colors.orange : colors.card, 
                 padding: 10,
-   
                 borderRadius: 8,
                 width: '100%',
             }}
-            onPress={() => setSelectedAnimal(item._id)} 
+            onPress={() => router.push(`/animalProfil/${item._id}`)} 
         >
             <Text style={{ color: colors.text, fontFamily: 'cookie', fontSize: 40 }}>
                 {item.name}
@@ -81,10 +76,12 @@ const MyAnimal = () => {
                     data={animals}
                     renderItem={renderAnimalItem}
                     keyExtractor={(item) => item._id.toString()}
-                    style={{  padding: 10 }}
+                    style={{ padding: 10 , width: WIDTH_BTN}}
                 />
             ) : (
-                <Text style={{ color: colors.orange }}>Vous n'avez pas encore ajouté d'animal à votre liste.</Text>
+                <Text className="justify-center" style={{ color: colors.orange }}>
+                    Vous n'avez pas encore ajouté d'animal à votre liste.
+                </Text>
             )}
 
             <TouchableOpacity>
