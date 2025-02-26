@@ -54,7 +54,16 @@ const MyAnimal = () => {
                 borderRadius: 8,
                 width: '100%',
             }}
-            onPress={() => router.push(`/animalProfil/${item._id}`)} 
+          
+            onPress={() => {
+              router.push({
+                pathname: `${item._id}/animalProfil/`,
+                params: {
+                  id: item._id,
+ 
+                },
+              });
+            }}
         >
             <Text style={{ color: colors.text, fontFamily: 'cookie', fontSize: 40 }}>
                 {item.name}
@@ -83,6 +92,8 @@ const MyAnimal = () => {
                     Vous n'avez pas encore ajouté d'animal à votre liste.
                 </Text>
             )}
+
+            
 
             <TouchableOpacity>
                 <Text
