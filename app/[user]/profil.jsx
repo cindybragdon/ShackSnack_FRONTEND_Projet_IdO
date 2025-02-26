@@ -270,7 +270,6 @@ const styles = StyleSheet.create({
       width: '100%',
     },
 
-
 });
 
 export default profil
