@@ -16,7 +16,7 @@ const  WIDTH_BTN = Dimensions.get('window').width - 56
 const [fontLoaded, setFontLoaded] = useState(false);
 const [alertIdentifier, setAlertIdentifier] = useState(false)
 const [alertMDP, setAlertMDP] = useState(false)
-const [form, setForm] = useState({usernameOrEmail:"",password:""})
+const [form, setForm] = useState({usernameOrEmail:"kiki@koko.com",password:"abc123"})
 const { theme } = useTheme()
 const colors = color[theme]
 
