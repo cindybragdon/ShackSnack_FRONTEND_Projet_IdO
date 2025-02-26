@@ -99,8 +99,8 @@ const Feed = () => {
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{ backgroundColor: colors.background_w }}>
             <View className="items-center">
-                <Text className="text-center uppercase font-bold text-3xl mb-[-20]" style={{ color: colors.orange }}>Feed </Text>
-                <Text className="text-center font-bold text-6xl mb-[-20]" style={{ color: colors.black, fontFamily: 'cookie' }}>your</Text>
+                <Text className="text-center uppercase font-bold text-3xl mb-[-20]" style={{ color: colors.orange }}>Nourrir </Text>
+                <Text className="text-center font-bold text-6xl mb-[-20]" style={{ color: colors.black, fontFamily: 'cookie' }}>votre</Text>
                 <Text className="text-center uppercase font-bold text-3xl mb-[20]" style={{ color: colors.orange }}> Animal </Text>
 
                 {/* WebView pour afficher le flux vidéo */}
@@ -134,7 +134,7 @@ const Feed = () => {
                         marginBottom: 20
                     }}
                 >
-                    <Picker.Item label="Sélectionner un animal" value="" />
+                    <Picker.Item label="Sélectionnez un animal" value="" />
                     {animals && animals.map((animal, index) => (
                         <Picker.Item key={index} label={animal.name} value={animal} />
                     ))}
@@ -147,7 +147,7 @@ const Feed = () => {
                     style={{ backgroundColor: colors.blue, width: WIDTH_BTN }}
                 >
                     <Text className="text-center text-2xl p-3 rounded-xl" style={{ backgroundColor: colors.blue, color: colors.background }}>
-                        Nourrir le cabot
+                        Nourrir la boule de poils
                     </Text>
                 </TouchableOpacity>
 

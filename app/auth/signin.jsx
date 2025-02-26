@@ -146,7 +146,7 @@ useEffect(() => {
                 </View>
 
         </View>
-        <Text class="text-3xl font-bold underline" style={{color:colors.orange}}>Si vous n'avez pas de compte, <Link style={{color:colors.black}} className="underline" href="./signup">Cliquez-ici</Link></Text>
+        <Text class="text-3xl font-bold underline" style={{color:colors.orange}}>Si vous n'avez pas de compte, <Link style={{color:colors.black}} className="underline" href="./signup">cliquez-ici</Link></Text>
     </View>
     </ScrollView>
     </KeyboardAvoidingView>

@@ -174,7 +174,7 @@ const Signup = () => {
               onPress={() => submit()}
             >
               <Text className="text-center font-medium text-2xl" style={{ color: colors.background }}>
-                Créez le compte
+                Créer le compte
               </Text>
             </TouchableOpacity>
 

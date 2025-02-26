@@ -69,12 +69,12 @@ const animalProfil = () => {
               />
           ) : (
             <View className="w-[200] h-[200] rounded-full bg-gray-400 justify-center items-center mb-[2]" style={{backgroundColor:colors.orange}}>
-              <Text className="text-white font-bold">Pas de photo</Text>
+              <Text className="text-white font-bold">Pas encore de photo</Text>
             </View>
           )}
         </TouchableOpacity>
         {!isEditing ? (
-              <Text className="text-4xl font-medium uppercase mt-[30]" style={{ color: colors.orange }}>NAME: {name}</Text>
+              <Text className="text-4xl font-medium uppercase mt-[30]" style={{ color: colors.orange }}>Prénom: {name}</Text>
             ) : (
               <TextInput
                 className="justify-center text-center text-4xl font-medium px-16"
@@ -177,7 +177,7 @@ const animalProfil = () => {
             </TouchableOpacity>
            {isEditing && (
           <TouchableOpacity className={"py-2 pb-4 px-8 "} onPress={updateAnimal} style={[{  width: WIDTH_BTN}]}>
-            <Text className="text-center font-xl text-2xl p-3 rounded-xl " style={{ color: colors.background_w , backgroundColor: colors.orange}}>Save</Text>
+            <Text className="text-center font-xl text-2xl p-3 rounded-xl " style={{ color: colors.background_w , backgroundColor: colors.orange}}>Sauvegarder</Text>
           </TouchableOpacity>
         )}
       </View>

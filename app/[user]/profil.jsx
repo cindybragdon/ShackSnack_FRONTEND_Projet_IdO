@@ -196,7 +196,7 @@ const hideDeleteConfirmation = () => {
             </TouchableOpacity>
            {isEditing && (
           <TouchableOpacity className={"py-2 pb-4 px-8 "} onPress={handleSaveUser} style={[{  width: WIDTH_BTN}]}>
-            <Text className="text-center font-xl text-2xl p-3 rounded-xl " style={{ color: colors.background_w , backgroundColor: colors.orange}}>Save</Text>
+            <Text className="text-center font-xl text-2xl p-3 rounded-xl " style={{ color: colors.background_w , backgroundColor: colors.orange}}>Sauvegarder</Text>
           </TouchableOpacity>
         )}
 
