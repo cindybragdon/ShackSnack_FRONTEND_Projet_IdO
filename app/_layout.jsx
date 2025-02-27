@@ -42,16 +42,16 @@ const Layout = () => {
         }}
       >
         <Drawer.Screen name="index" options={{ headerShown: false, title: "Page d'acceuil", drawerItemStyle: { display: '' } }} />
-        <Drawer.Screen name="auth" options={{ title: "Signin", headerShown: false, drawerItemStyle: { display: 'none' } }} />
-        <Drawer.Screen name="[user]/profil" options={{ title: "Profil" }} />
-        <Drawer.Screen name="[user]/setting" options={{ title: "Settings" }} />
+        <Drawer.Screen name="auth" options={{ title: "Connexion", headerShown: false, drawerItemStyle: { display: 'none' } }} />
+        <Drawer.Screen name="[user]/profil" options={{ title: "Mon Profil" }} />
+        <Drawer.Screen name="[user]/setting" options={{ title: "Paramètres" }} />
         <Drawer.Screen name="[user]/addPet" options={{ title: "Ajouter un animal" }} />
         <Drawer.Screen name="[user]/animalProfil" options={{ title: "Profil de vos animaux" }} />
         <Drawer.Screen name="[user]/myAnimal" options={{ title: "Vos animaux" }} />
         <Drawer.Screen name="camera/index" options={{ headerShown: false, drawerItemStyle: { display: 'none' } }} />
         <Drawer.Screen name="camera1/index" options={{ headerShown: false, drawerItemStyle: { display: 'none' } }} />
-        <Drawer.Screen name="[user]/statsScreen" options={{ title: "Graphique" }} />
-        <Drawer.Screen name="[user]/Feed" options={{ title: "Feed!" }} />
+        <Drawer.Screen name="[user]/statsScreen" options={{ title: "Statistiques" }} />
+        <Drawer.Screen name="[user]/Feed" options={{ title: "Nourrir un animal" }} />
       </Drawer>
     </GestureHandlerRootView>
   );

@@ -57,7 +57,7 @@ const addPet = () => {
             
             router.push('[user]/myAnimal');
         } catch (error) {
-            console.error("Error adding animal:", error);
+            console.error("Erreur lors de l'ajout de l\'animal:", error);
             alert("Une erreur est survenue, veuillez réessayer.");
         }
     };

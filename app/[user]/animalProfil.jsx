@@ -43,7 +43,7 @@ const animalProfil = () => {
               setTreats();
               setMeal();
             } catch (error) {
-              console.log("Animal profile : Failed", error);
+              console.log("Profil de l'animal : non abouti", error);
             }
           };
     
@@ -82,7 +82,7 @@ const animalProfil = () => {
                 value={name}
                 onChangeText={(item) => { setName(item);  
                 }}
-                placeholder={'name'}
+                placeholder={'Nom'}
                 placeholderTextColor={colors.blue}
               
               />
@@ -96,7 +96,7 @@ const animalProfil = () => {
                 value={nickname}
                 onChangeText={(item) => { setNickname(item);  
                 }}
-                placeholder={'nickname'}
+                placeholder={'Surnom'}
                 placeholderTextColor={colors.blue}
               
               />
@@ -124,7 +124,7 @@ const animalProfil = () => {
                   value={weight}
                   onChangeText={(item) => { setWeight(item);  
                   }}
-                  placeholder={'weight'}
+                  placeholder={'Poids'}
                   placeholderTextColor={colors.blue}
                    keyboardType='numeric'
                 />
@@ -138,7 +138,7 @@ const animalProfil = () => {
                   value={birth_date}
                   onChangeText={(item) => { setBirthDate(item);  
                   }}
-                  placeholder={'birth_date'}
+                  placeholder={'Date de naissance'}
                   placeholderTextColor={colors.blue}
                    keyboardType='numeric'
                 />
@@ -152,7 +152,7 @@ const animalProfil = () => {
                   value={treats}
                   onChangeText={(item) => { setTreats(item);  
                   }}
-                  placeholder={'treats'}
+                  placeholder={'Gâteries'}
                   placeholderTextColor={colors.blue}
                    keyboardType='numeric'
                 />
@@ -166,7 +166,7 @@ const animalProfil = () => {
                   value={meal}
                   onChangeText={(item) => { setMeal(item);  
                   }}
-                  placeholder={'meal'}
+                  placeholder={'Repas'}
                   placeholderTextColor={colors.blue}
                    keyboardType='numeric'
                 />

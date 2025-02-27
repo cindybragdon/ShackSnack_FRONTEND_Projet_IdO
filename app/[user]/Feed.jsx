@@ -48,7 +48,7 @@ const Feed = () => {
                     setAnimals(animalsList);
                 }
             } catch (error) {
-                console.error('Erreur de chargement des animaux:', error);
+                console.error('Erreur lors du chargement des animaux:', error);
             }
         };
         loadAnimals();
@@ -87,7 +87,7 @@ const Feed = () => {
                         'Content-Type': 'application/json',
                     }
                 });
-                console.log(`L'animal ${selectedAnimal.name} est nourri avec une durée de ${duration} secondes.`);
+                console.log(`L'animal ${selectedAnimal.name} est nourri durant ${duration} secondes.`);
             } catch (error) {
                 console.error('Erreur lors de l\'envoi de la requête pour nourrir l\'animal:', error);
             }
@@ -114,7 +114,7 @@ const Feed = () => {
                         />
                     ) : (
                         <Text className="text-center" style={{ color: colors.background_w }}>
-                            Entrez une IP pour voir la caméra
+                            Entrez l'ip du Raspberry Pi pour voir la caméra
                         </Text>
                     )}
                 </View>
@@ -147,7 +147,7 @@ const Feed = () => {
                     style={{ backgroundColor: colors.blue, width: WIDTH_BTN }}
                 >
                     <Text className="text-center text-2xl p-3 rounded-xl" style={{ backgroundColor: colors.blue, color: colors.background }}>
-                        Nourrir la boule de poils
+                        Nourrir la boule de poil
                     </Text>
                 </TouchableOpacity>
 

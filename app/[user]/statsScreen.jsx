@@ -127,7 +127,7 @@ const StatsScreen = () => {
       color: item?.color || ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"][index % 4], // Ajoute une couleur par défaut
     }))
   : [];
-  console.log("Colors : ")
+  //console.log("Colors : ")
   console.log(formattedPieData)
 
 
@@ -161,7 +161,7 @@ const StatsScreen = () => {
         />
       </View>
 
-      <Text className="text-blue-500">Choisir</Text>
+      <Text className="text-blue-500">Choisir un animal</Text>
   
       {/* Dropdown pour sélectionner un animal */}
       <Picker selectedValue={selectedAnimal} onValueChange={(itemValue) => setSelectedAnimal(itemValue)}>

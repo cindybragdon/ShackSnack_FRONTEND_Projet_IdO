@@ -53,7 +53,7 @@ useEffect(() => {
       return null
     }
   
-    console.log(`Trying to signIn with usernameOrEmail : ${form.usernameOrEmail} and password : ${form.password}`)
+    console.log(`Tentative de connexion avec le nom dusager ou le courriel : ${form.usernameOrEmail} et le mot de passe : ${form.password}`)
   
     try{
         setLoading(true)
@@ -65,7 +65,7 @@ useEffect(() => {
   
     } catch(error){
         setLoading(false)
-        if(error.message == "AxiosError: Request failed with status code 401"){
+        if(error.message == "AxiosError: Requête échouée avec le code d'état 401"){
           setMsgErreur("Identifiant ou mot de passe incorrect")
         }
         else{
