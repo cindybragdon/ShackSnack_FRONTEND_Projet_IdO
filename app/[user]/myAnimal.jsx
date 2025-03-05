@@ -13,7 +13,8 @@ const MyAnimal = () => {
     const WIDTH_BTN = Dimensions.get('window').width - 56;
     const [fontLoaded, setFontLoaded] = useState(false);
     const [animals, setAnimals] = useState([]);
-    const [selectedAnimal, setSelectedAnimal] = useState(null); 
+    const [selectedAnimal, setSelectedAnimal] = useState(null)
+     
 
     useEffect(() => {
         async function loadFont() {

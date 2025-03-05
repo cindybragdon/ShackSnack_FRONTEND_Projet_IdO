@@ -124,7 +124,7 @@ const Feed = () => {
                     selectedValue={selectedAnimal}
                     onValueChange={(itemValue) => setSelectedAnimal(itemValue)} // Mettre à jour l'ID de l'animal sélectionné
                     style={{
-                        height: 60,
+
                         width: WIDTH_BTN,
                         backgroundColor: colors.background_w,
                         color: colors.black,

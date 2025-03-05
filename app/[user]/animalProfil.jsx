@@ -1,10 +1,11 @@
-import { View, Text, TouchableOpacity, Dimensions, TextInput, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, TextInput, Image, StyleSheet, Modal } from 'react-native';
 import React, { useState, useCallback } from 'react';
 import { color } from '../../assets/color';
-import { useRouter, useFocusEffect } from 'expo-router';
+import { useRouter, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useTheme } from "../../contexts/ThemeContext";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getUser, getAnimals, getSubdocumentById } from '../../lib/axios';
+import { getUser, getAnimals, getSubdocumentById, updateSubdocument, setAnimals, deleteSubdocument } from '../../lib/axios';
+import { resetToDefaults } from '@testing-library/react-native';
 const WIDTH_BTN = Dimensions.get('window').width - 56;
 
 const animalProfil = () => {
@@ -23,7 +24,8 @@ const animalProfil = () => {
     const [number_sec_food, setMeal] = useState('');
     const [userId, setUserId] = useState(null);
     const [animalId, setAnimalId] = useState(null);
-
+    const params = useLocalSearchParams();
+    const [showModal, setShowModal] = useState(false); 
 
     const handleCameraPress = () => {
         router.push("../camera1");
@@ -32,34 +34,49 @@ const animalProfil = () => {
     const updateAnimal = async () => {
         try {
             await AsyncStorage.setItem('photoAnimal', animalPic);
+            const userData = await getUser();
+            const animalData ={name, nickname, type_animal, weight, birth_date, number_sec_treats, number_sec_treats}
+
+            const resp = await updateSubdocument(userData.id, 'animals', id, animalData)
+             await setAnimals (resp.animals)
             console.log("Photo saved successfully!");
+            setIsEditing(false);
         } catch (error) {
             console.log("Failed to save photo", error);
         }
     };
 
+    const { id = '' } = params;
+
     const fetchUserAndAnimalDetails = async () => {
+        setAnimalPic('');
+        setName('');
+        setNickname('');
+        setType('');
+        setWeight('');
+        setBirthDate('');
+        setTreats('');
+        setMeal('');
+
         try {
             const userData = await getUser();
             const userAnimals = await getAnimals();
 
             if (userData && userAnimals && userAnimals.length > 0) {
-                setUserId(userData.id);  
-                const firstAnimal = userAnimals[0];
-                setAnimalId(firstAnimal.id); 
+                setUserId(userData.id);
 
-                const animalDetails = await getSubdocumentById(userData.id, 'animals', firstAnimal._id);
+                const animalDetails = await getSubdocumentById(userData.id, 'animals', id);
                 const photo1 = await AsyncStorage.getItem('photoAnimal');
 
-                if (animalDetails) 
-                    {if (photo1) setAnimalPic(photo1);
+                if (animalDetails) {
+                    if (photo1) setAnimalPic(photo1);
 
                     setName(animalDetails.name || '');
                     setNickname(animalDetails.nickname || '');
                     setType(animalDetails.type_animal || '');
                     setWeight(animalDetails.weight || '');
                     setBirthDate(animalDetails.birth_date || '');
-                    setTreats(animalDetails.number_sec_treats|| '');
+                    setTreats(animalDetails.number_sec_treats || '');
                     setMeal(animalDetails.number_sec_food || '');
                 }
             }
@@ -71,8 +88,35 @@ const animalProfil = () => {
     useFocusEffect(
         useCallback(() => {
             fetchUserAndAnimalDetails(); 
-        }, [])
+        }, [id])
     );
+
+
+    const supprimerAnimal = async () => {
+        try {
+            const userData = await getUser();
+        
+            await deleteSubdocument(userData.id,'animals', id)
+            const animals = await getAnimals();
+            const updatedAnimalList = animals.filter(animal => animal._id != id)
+            await setAnimals (updatedAnimalList)
+            hideDeleteConfirmation();
+            router.push('./myAnimal')
+
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
+
+    const showDeleteConfirmation = () => {
+        setShowModal(true); 
+      };
+      
+      const hideDeleteConfirmation = () => {
+        setShowModal(false); 
+      };
 
     return (
         <View className="flex-1" style={{ backgroundColor: colors.background_w }}>
@@ -96,7 +140,7 @@ const animalProfil = () => {
                 </TouchableOpacity>
 
                 {!isEditing ? (
-                    <Text className="text-4xl font-medium uppercase mt-[30]" style={{ color: colors.orange }}>NAME: {name}</Text>
+                    <Text className="text-4xl font-medium uppercase mt-[30]" style={{ color: colors.orange }}> {name}</Text>
                 ) : (
                     <TextInput
                         className="justify-center text-center text-4xl font-medium px-16"
@@ -127,7 +171,7 @@ const animalProfil = () => {
                     <TextInput
                         className="justify-center text-center text-4xl font-medium px-16"
                         style={[{ color: color.blue, backgroundColor: colors.background }]}
-                        value={type}
+                        value={type_animal}
                         onChangeText={(item) => { setType(item); }}
                         placeholder={'type'}
                         placeholderTextColor={colors.blue}
@@ -190,7 +234,7 @@ const animalProfil = () => {
                     />
                 )}
 
-                <TouchableOpacity className={"py-2 pb-4 px-8 mt-[150] "} style={[{ width: WIDTH_BTN }]} onPress={() => setIsEditing(!isEditing)}>
+                <TouchableOpacity className={"py-2 pb-4 px-8 mt-[100] "} style={[{ width: WIDTH_BTN }]} onPress={() => setIsEditing(!isEditing)}>
                     <Text className="text-center font-xl text-2xl p-3 rounded-xl" style={[{ backgroundColor: colors.blue, color: colors.background }]}>Modifier vos info</Text>
                 </TouchableOpacity>
 
@@ -199,9 +243,54 @@ const animalProfil = () => {
                         <Text className="text-center font-xl text-2xl p-3 rounded-xl" style={{ color: colors.background_w, backgroundColor: colors.orange }}>Save</Text>
                     </TouchableOpacity>
                 )}
+                <TouchableOpacity className={"py-2 pb-4 px-8"} style={[{width:WIDTH_BTN}]} onPress={showDeleteConfirmation}>
+                <Text className="text-center font-xl text-2xl p-3 rounded-xl " style={[{backgroundColor: colors.blue, color: colors.background}] }> Supprimer un animal</Text>
+            </TouchableOpacity>
             </View>
+            <Modal
+          visible={showModal}
+          animationType="fade"
+          transparent={true}
+          onRequestClose={hideDeleteConfirmation}
+        >
+          <View style={styles.modalBackground}>
+            <View style={styles.modalContainer}>
+              <Text className="text-xl"style={{ color: colors.black}}>Êtes-vous sûr de vouloir supprimer cette animal ?</Text>
+              <View style={styles.modalButtons}>
+                <TouchableOpacity className="py-[10] w-[120] rounded-xl"onPress={supprimerAnimal} style={{backgroundColor: colors.orange}}>
+                  <Text className="text-center"style={{color : colors.background_w}}>Oui</Text>
+                </TouchableOpacity>
+                <TouchableOpacity className="py-[10] w-[120] rounded-xl" onPress={hideDeleteConfirmation} style={{backgroundColor: colors.orange}}>
+                  <Text  className="text-center"style={{color : colors.background_w}}>Non</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+    modalBackground: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      },
+      modalContainer: {
+        backgroundColor: 'white',
+        padding: 20,
+        borderRadius: 10,
+        width: 300,
+        alignItems: 'center',
+      },
+      modalButtons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 20,
+        width: '100%',
+      },
+});
 
 export default animalProfil;
