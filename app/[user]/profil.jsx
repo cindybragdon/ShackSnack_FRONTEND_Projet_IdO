@@ -210,7 +210,7 @@ const hideDeleteConfirmation = () => {
                 <Text className="text-center font-xl text-2xl p-3 rounded-xl " style={[{backgroundColor: colors.blue, color: colors.background}] }> Supprimer votre compte</Text>
             </TouchableOpacity>
             <TouchableOpacity className={"py-2 pb-4 px-8"} style={[{width:WIDTH_BTN}]} onPress={logOut}>
-                <Text className="text-center font-xl text-2xl p-3 rounded-xl " style={[{backgroundColor: colors.orange, color: colors.background}] }> Déconnexion</Text>
+                <Text className="text-center font-xl text-2xl p-3 rounded-xl " style={[{backgroundColor: colors.blue, color: colors.background}] }> Déconnexion</Text>
             </TouchableOpacity>
           </View>
 

@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Alert, Modal, Button, StyleSheet, Switch } from 'react-native';
 import { useTheme } from "../../contexts/ThemeContext";
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import { color } from "../../assets/color";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import axios from 'axios';
 
 const Setting = () => {
   const { theme, toggleTheme } = useTheme();
-  const [notifEnabled, setNotifEnabled] = useState(false);
+  const colors = color[theme];
+
   const [reminderEnabled, setReminderEnabled] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [darkModeEnabled, setDarkModeEnabled] = useState(theme === 'dark');
 
-  const toggleNotif = () => setNotifEnabled(!notifEnabled);
   const toggleReminder = () => {
     setReminderEnabled(!reminderEnabled);
     if (!reminderEnabled) {
@@ -20,75 +21,97 @@ const Setting = () => {
     }
   };
 
-  const handlePing = () => {
-    // Simulation du ping (remplace par une vraie requête vers le distributeur)
-    const isOnline = Math.random() > 0.5;
-    Alert.alert("État du distributeur", isOnline ? "📡 Distributeur en marche" : "❌ Impossible d'établir un signal");
+  const handleToggleTheme = () => {
+    setDarkModeEnabled(!darkModeEnabled);
+    toggleTheme();
+  };
+
+  const handlePing = async () => {
+    try {
+      const response = await axios.get('http://192.168.1.100:5000/ping', { timeout: 2000 });
+      if (response.status === 200) {
+        Alert.alert("📡 État du distributeur", "✅ Distributeur en ligne !");
+      } else {
+        Alert.alert("📡 État du distributeur", "❌ Réponse inattendue du serveur");
+      }
+    } catch (error) {
+      Alert.alert("📡 État du distributeur", "❌ Impossible d'établir un signal");
+    }
   };
 
   return (
-    <View className="flex-1 items-center">
-      <Text className="uppercase text-2xl">Paramètres</Text>
+    <View style={[styles.container, { backgroundColor: colors.background_w }]}>
+      <Text style={[styles.title, { color: colors.orange }]}>⚙️ Paramètres</Text>
 
-      {/* Dark Mode */}
-      <TouchableOpacity onPress={toggleTheme}>
-        <Text>
-          <Icon name={theme === 'light' ? "moon" : "sun"} size={30} color={color.orange} />
-        </Text>
-      </TouchableOpacity>
+      <View style={styles.settingsContainer}>
+        {/* Mode Sombre */}
+        <View style={[styles.settingRow, { borderBottomColor: colors.black }]}>
+          <Text style={[styles.settingText, { color: colors.black }]}>🌙 Mode sombre</Text>
+          <Switch value={darkModeEnabled} onValueChange={handleToggleTheme} />
+        </View>
 
-      {/* Notifications Slider */}
-      <View style={styles.settingRow}>
-        <Text>Autoriser les notifications</Text>
-        <Switch value={notifEnabled} onValueChange={toggleNotif} />
+        {/* Rappel */}
+        <View style={[styles.settingRow, { borderBottomColor: colors.black }]}>
+          <Text style={[styles.settingText, { color: colors.black }]}>⏰ Ajouter un rappel</Text>
+          <Switch value={reminderEnabled} onValueChange={toggleReminder} />
+        </View>
       </View>
 
-      {/* Reminder Slider */}
-      <View style={styles.settingRow}>
-        <Text>Ajouter un rappel</Text>
-        <Switch value={reminderEnabled} onValueChange={toggleReminder} />
-      </View>
-
-      {/* Modal pour choisir le jour et l'heure */}
+      {/* Choix de l'heure pour le rappel */}
       {modalVisible && (
-        <Modal
-          transparent={true}
-          animationType="slide"
-          visible={modalVisible}
-          onRequestClose={() => setModalVisible(false)}
-        >
+        <Modal transparent animationType="slide" visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
           <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
-              <Text>Choisir un jour et une heure :</Text>
+            <View style={[styles.modalContent, { backgroundColor: colors.background_w }]}>
+              <Text style={{ color: colors.black, fontSize: 18, marginBottom: 10 }}>📅 Choisir une date :</Text>
               <DateTimePicker
                 value={selectedDate}
                 mode="datetime"
                 display="default"
-                onChange={(event, date) => {
-                  if (date) setSelectedDate(date);
-                }}
+                onChange={(event, date) => date && setSelectedDate(date)}
               />
-              <Button title="Valider" onPress={() => setModalVisible(false)} />
+              <Button title="✔️ Valider" onPress={() => setModalVisible(false)} />
             </View>
           </View>
         </Modal>
       )}
 
       {/* Ping du distributeur */}
-      <TouchableOpacity style={styles.pingButton} onPress={handlePing}>
-        <Text>📍 Ping Distributeur</Text>
+      <TouchableOpacity onPress={handlePing} style={[styles.pingButton, { backgroundColor: colors.blue }]}>
+        <Text style={[styles.pingText, { color: colors.background }]}>📍 Tester la connexion</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    padding: 25,
+  },
+  title: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    marginBottom: 30,
+  },
+  settingsContainer: {
+    width: "90%",
+    backgroundColor: "rgba(0, 0, 0, 0.05)",
+    borderRadius: 10,
+    paddingVertical: 15,
+    paddingHorizontal: 15,
+  },
   settingRow: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
-    width: "80%",
-    marginVertical: 10,
+    alignItems: 'center',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+  },
+  settingText: {
+    fontSize: 18,
+    fontWeight: "500",
   },
   modalContainer: {
     flex: 1,
@@ -97,17 +120,21 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
   },
   modalContent: {
-    backgroundColor: 'white',
     padding: 20,
     borderRadius: 10,
     alignItems: 'center',
   },
   pingButton: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: color.orange,
+    marginTop: 30,
+    padding: 15,
     borderRadius: 10,
-  }
+    width: "80%",
+    alignItems: "center",
+  },
+  pingText: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
 });
 
 export default Setting;
