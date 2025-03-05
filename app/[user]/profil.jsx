@@ -28,7 +28,7 @@ const profil = () => {
       const loadData = async () => {
         try {
           const profileData = await getUser();
-          if (!profileData) throw new Error('Failed fetching data -> no Data');
+          if (!profileData) throw new Error('Erreur lors du fetch du data -> no Data');
           setUsername(profileData.username);
           setEmail(profileData.email);
           setFirstName(profileData.firstname);
@@ -36,9 +36,9 @@ const profil = () => {
           const photo = await AsyncStorage.getItem('photo');
           if (photo) setProfilePic(photo); 
         } catch (error) {
-          console.log('Profile: Failed loading profile data:', error);
+          console.log('Profil: Erreur lors du loading du profile data:', error);
           router.push("/auth/signin");
-          console.log("Plante profile : Failed", error);
+          console.log("Profil : Non abouti", error);
         }
       };
       loadData();
@@ -69,7 +69,7 @@ const profil = () => {
   const handleSaveUser = async () => {
     try {
         const profileData = await getUser();
-        console.log('Profile Data:', profileData);
+        console.log('Profil Data:', profileData);
         
         
             await updateUser(profileData.id, username, firstname, lastname, email); 
@@ -78,7 +78,7 @@ const profil = () => {
             setIsEditing(false);
             setMessageVisible(true);
             setIsEditSuccess(true);
-            console.log('User updated successfully');
+            console.log('Usager modifié avec succès');
        
             setIsEditSuccess(false);
             setMessageVisible(true);
@@ -88,7 +88,7 @@ const profil = () => {
     } catch (error) {
         setIsEditSuccess(false);
         setMessageVisible(true);
-        console.error('Failed to update user:', error);
+        console.error('Erreur lors de la modification de l\'usager :', error);
     }
 } 
 
@@ -134,7 +134,7 @@ const hideDeleteConfirmation = () => {
                 value={username}
                 onChangeText={(item) => { setUsername(item);  
                 }}
-                placeholder={'username'}
+                placeholder={'Nom d\'utilisateur'}
                 placeholderTextColor={colors.blue}
               
               />
@@ -151,7 +151,7 @@ const hideDeleteConfirmation = () => {
                 value={firstname}
                 onChangeText={(item) => { setFirstName(item);  
                 }}
-                placeholder={'firstname'}
+                placeholder={'Prénom'}
                 placeholderTextColor={colors.blue}
               
               />
@@ -167,7 +167,7 @@ const hideDeleteConfirmation = () => {
                 value={lastname}
                 onChangeText={(item) => { setLastName(item);  
                 }}
-                placeholder={'lastname'}
+                placeholder={'Nom'}
                 placeholderTextColor={colors.blue}
               
               />
@@ -181,7 +181,7 @@ const hideDeleteConfirmation = () => {
                 value={email}
                 onChangeText={(item) => { setEmail(item);  
                 }}
-                placeholder={'email'}
+                placeholder={'Courriel'}
                 placeholderTextColor={colors.blue}
               
               />
@@ -196,7 +196,7 @@ const hideDeleteConfirmation = () => {
             </TouchableOpacity>
            {isEditing && (
           <TouchableOpacity className={"py-2 pb-4 px-8 "} onPress={handleSaveUser} style={[{  width: WIDTH_BTN}]}>
-            <Text className="text-center font-xl text-2xl p-3 rounded-xl " style={{ color: colors.background_w , backgroundColor: colors.orange}}>Save</Text>
+            <Text className="text-center font-xl text-2xl p-3 rounded-xl " style={{ color: colors.background_w , backgroundColor: colors.orange}}>Sauvegarder</Text>
           </TouchableOpacity>
         )}
 

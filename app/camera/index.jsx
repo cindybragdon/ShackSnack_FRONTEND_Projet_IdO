@@ -19,7 +19,7 @@ export default function App() {
   if (!permission.granted) {
     return (
       <View style={styles.container}>
-        <Text style={styles.message}>We need your permission to show the camera</Text>
+        <Text style={styles.message}>Donnez votre permission pour l'utilisation de la caméra</Text>
         <Button onPress={requestPermission} title="grant permission" />
       </View>
     );
@@ -47,7 +47,7 @@ export default function App() {
               <Text className="text-white">Flip</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{backgroundColor: color.orange}}className="w-32 h-32 bg-black rounded-full items-center justify-center mx-10" onPress={(takePictureAsync)=>{takeAPhoto(takePictureAsync)}}>
-              <Text className="text-white" >Take a photo</Text>
+              <Text className="text-white" >Prendre une photo</Text>
             </TouchableOpacity>
           </View>
           <View>

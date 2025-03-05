@@ -57,7 +57,7 @@ const addPet = () => {
             
             router.push('[user]/myAnimal');
         } catch (error) {
-            console.error("Error adding animal:", error);
+            console.error("Erreur lors de l'ajout de l\'animal:", error);
             alert("Une erreur est survenue, veuillez réessayer.");
         }
     };
@@ -83,7 +83,7 @@ const addPet = () => {
             className="flex-1">
             <View className="flex-1" style={{ backgroundColor: colors.background_w }}>
 
-                <Text className="text-center uppercase font-bold text-3xl mb-[-20]" style={{ color: colors.orange }}> Ajouter </Text>
+                <Text className="text-center uppercase font-bold text-3xl mb-[-20]" style={{ color: colors.orange }}> Ajoutez </Text>
                 <Text className="text-center  font-bold text-6xl mb-[-20]" style={{ color: colors.black, fontFamily: 'cookie' }}>vos</Text>
                 <Text className="text-center uppercase font-bold text-3xl mb-[100]" style={{ color: colors.orange }}> Animaux</Text>
                 <View className="justify-center items-center">
@@ -126,7 +126,7 @@ const addPet = () => {
                         onPress={() => setShowDatePicker(true)}
                         style={{ backgroundColor: colors.blue, width: WIDTH_BTN, padding: 15, borderRadius: 10, marginBottom: 10 }}>
                         <Text style={{ color: colors.background_w, textAlign: 'center' }}>
-                            {form.birthdate ? form.birthdate.toLocaleDateString() : 'Sélectionner la date de naissance'}
+                            {form.birthdate ? form.birthdate.toLocaleDateString() : 'Sélectionnez la date de naissance'}
                         </Text>
                     </TouchableOpacity>
 
