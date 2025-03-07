@@ -7,6 +7,7 @@ import { WebView } from 'react-native-webview';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCurrentDeepLink } from '../../utils/useDeepLink';
 import { Picker } from '@react-native-picker/picker';
+import { createFeedingLog, getAnimals, getUser } from '../../lib/axios'; // Assurez-vous que cette fonction est bien importée
 import { getAnimals } from '../../lib/axios'; // Fonction pour récupérer la liste des animaux depuis l'API
 import axios from 'axios'; // Librairie pour effectuer des requêtes HTTP
 
@@ -81,6 +82,19 @@ const Feed = () => {
                         'Content-Type': 'application/json',
                     }
                 });
+                const user = await getUser()
+                console.log(user.devices);
+                if(user.devices) {
+                    await axios.post(`http://${raspberryIp}:5000/device_settings`, {
+                        device:user.devices[0],
+                    }, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    });
+
+                    await createFeedingLog(selectedAnimal._id, user.devices[0]._id, "Dry food", duration);
+                }
                 console.log(`L'animal ${selectedAnimal.name} est nourri durant ${duration} secondes.`);
             } catch (error) {
                 console.error('Erreur lors de l\'envoi de la requête pour nourrir l\'animal:', error);
