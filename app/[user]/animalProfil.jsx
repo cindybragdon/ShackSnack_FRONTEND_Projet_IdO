@@ -141,7 +141,101 @@ const animalProfil = () => {
                 </TouchableOpacity>
 
                 {/* Champs d'édition des informations de l'animal */}
-                <Text className="text-4xl font-medium uppercase mt-[30]" style={{ color: colors.orange }}>{name}</Text>
+                {!isEditing ? (
+                    <Text className="text-4xl font-medium uppercase mt-[30]" style={{ color: colors.orange }}> {name}</Text>
+                ) : (
+                    <TextInput
+                        className="justify-center text-center text-4xl font-medium px-16"
+                        style={[{ color: color.blue, backgroundColor: colors.background }]}
+                        value={name}
+                        onChangeText={(item) => { setName(item); }}
+                        placeholder={'name'}
+                        placeholderTextColor={colors.blue}
+                    />
+                )}
+
+
+                {!isEditing ? (
+                    <Text className="text-2xl" style={{ color: colors.black }}>Surnom: {nickname}</Text>
+                ) : (
+                    <TextInput
+                        className="justify-center text-center text-4xl font-medium px-16"
+                        style={[{ color: color.blue, backgroundColor: colors.background }]}
+                        value={nickname}
+                        onChangeText={(item) => { setNickname(item); }}
+                        placeholder={'nickname'}
+                        placeholderTextColor={colors.blue}
+                    />
+                )}
+
+                {!isEditing ? (
+                    <Text className="text-2xl" style={{ color: colors.black }}>Type: {type_animal}</Text>
+                ) : (
+                    <TextInput
+                        className="justify-center text-center text-4xl font-medium px-16"
+                        style={[{ color: color.blue, backgroundColor: colors.background }]}
+                        value={type_animal}
+                        onChangeText={(item) => { setType(item); }}
+                        placeholder={'type'}
+                        placeholderTextColor={colors.blue}
+                    />
+                )}
+
+                {!isEditing ? (
+                    <Text className="text-2xl" style={{ color: colors.black }}>Poids: {weight}</Text>
+                ) : (
+                    <TextInput
+                        className="justify-center text-center text-4xl font-medium px-16"
+                        style={[{ color: color.blue, backgroundColor: colors.background }]}
+                        value={weight}
+                        onChangeText={(item) => { setWeight(item); }}
+                        placeholder={'weight'}
+                        placeholderTextColor={colors.blue}
+                        keyboardType='numeric'
+                    />
+                )}
+
+                {!isEditing ? (
+                    <Text className="text-2xl" style={{ color: colors.black }}>Date de naissance: {birth_date}</Text>
+                ) : (
+                    <TextInput
+                        className="justify-center text-center text-4xl font-medium px-16"
+                        style={[{ color: color.blue, backgroundColor: colors.background }]}
+                        value={birth_date}
+                        onChangeText={(item) => { setBirthDate(item); }}
+                        placeholder={'birth_date'}
+                        placeholderTextColor={colors.blue}
+                        keyboardType='numeric'
+                    />
+                )}
+
+                {!isEditing ? (
+                    <Text className="text-2xl" style={{ color: colors.black }}>Gâterie (secondes): {number_sec_treats}</Text>
+                ) : (
+                    <TextInput
+                        className="justify-center text-center text-4xl font-medium px-16"
+                        style={[{ color: color.blue, backgroundColor: colors.background }]}
+                        value={number_sec_treats}
+                        onChangeText={(item) => { setTreats(item); }}
+                        placeholder={'treats'}
+                        placeholderTextColor={colors.blue}
+                        keyboardType='numeric'
+                    />
+                )}
+
+                {!isEditing ? (
+                    <Text className="text-2xl" style={{ color: colors.black }}>Repas (secondes): {number_sec_food}</Text>
+                ) : (
+                    <TextInput
+                        className="justify-center text-center text-4xl font-medium px-16"
+                        style={[{ color: color.blue, backgroundColor: colors.background }]}
+                        value={number_sec_food}
+                        onChangeText={(item) => { setMeal(item); }}
+                        placeholder={'meal'}
+                        placeholderTextColor={colors.blue}
+                        keyboardType='numeric'
+                    />
+                )}
 
                 {/* Bouton pour activer l'édition */}
                 <TouchableOpacity className={"py-2 pb-4 px-8 mt-[100] "} style={[{ width: WIDTH_BTN }]} onPress={() => setIsEditing(!isEditing)}>
@@ -180,5 +274,28 @@ const animalProfil = () => {
         </View>
     );
 };
+
+// Styles pour la modal
+const styles = StyleSheet.create({
+    modalBackground: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalContainer: {
+        backgroundColor: 'white',
+        padding: 20,
+        borderRadius: 10,
+        width: 300,
+        alignItems: 'center',
+    },
+    modalButtons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 20,
+        width: '100%',
+    },
+});
 
 export default animalProfil;
