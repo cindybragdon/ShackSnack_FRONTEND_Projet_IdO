@@ -98,6 +98,71 @@ const Signup = () => {
               />
             </View>
 
+            <View className="border-2 rounded-lg mb-8" style={{ color: colors.darkgreen }}>
+              <View className="absolute z-10 -top-2.5 left-4 w-auto px-1" style={{ backgroundColor: colors.background_w, color: colors.darkgreen }}>
+                <Text className="w-auto" style={{ color: colors.orange }}>Nom</Text>
+              </View>
+              <TextInput
+                className="justify-center py-4 rounded-lg text-center"
+                style={{ width: WIDTH_BTN, color: colors.orange, backgroundColor: colors.background_w }}
+                placeholder="Entrez votre nom"
+                placeholderTextColor={colors.orange}
+                value={form.lastname}
+                onChangeText={(text) => setForm({ ...form, lastname: text })}
+              />
+            </View>
+
+            <View className="border-2 rounded-lg mb-8" style={{ color: colors.darkgreen }}>
+              <View className="absolute z-10 -top-2.5 left-4 w-auto px-1" style={{ backgroundColor: colors.background_w, color: colors.darkgreen }}>
+                <Text className="w-auto" style={{ color: colors.orange }}>Pseudo</Text>
+              </View>
+              <TextInput
+                className="justify-center py-4 rounded-lg text-center"
+                style={{ width: WIDTH_BTN, color: colors.orange, backgroundColor: colors.background_w }}
+                placeholder="Entrez votre pseudo"
+                placeholderTextColor={colors.orange}
+                value={form.username}
+                onChangeText={(text) => setForm({ ...form, username: text })}
+              />
+              {alertUsername ? <Icon className="absolute right-4 p-3" name="exclamation-triangle" size={20} color={colors.orange} />: null}
+
+            </View>
+
+            <View className="border-2 rounded-lg mb-8" style={{ color: color.orange }}>
+              <View className="absolute z-10 -top-2.5 left-4 w-auto px-1" style={{ backgroundColor: colors.background_w, color: colors.orange }}>
+                <Text className="w-auto" style={{ color: colors.orange }}>Courriel</Text>
+              </View>
+              <TextInput
+                className="justify-center py-4 rounded-lg text-center"
+                style={{ width: WIDTH_BTN, color: colors.orange, backgroundColor: colors.background_w }}
+                placeholder="Entrez votre courriel"
+                placeholderTextColor={colors.orange}
+                value={form.email}
+                onChangeText={(text) => setForm({ ...form, email: text })}
+              />
+              { alertEmail ? <Icon className="absolute right-4 p-3" name="exclamation-triangle" size={20} color={colors.orange} />: null}
+
+            </View>
+
+            <View className="border-2 rounded-lg mb-8" style={{ color: colors.orange }}>
+              <View className="absolute z-10 -top-2.5 left-4 w-auto px-1" style={{ backgroundColor: colors.background_w, color: colors.orange}}>
+                <Text className="w-auto" style={{ color: colors.orange }}>Mot de passe</Text>
+              </View>
+              <TextInput
+                className="justify-center py-4 rounded-lg text-center"
+                style={{ width: WIDTH_BTN, color: colors.orange, backgroundColor: colors.background_w }}
+                placeholder="Entrez votre mot de passe"
+                placeholderTextColor={colors.orange}
+                secureTextEntry
+                value={form.password}
+                onChangeText={(text) => setForm({ ...form, password: text })}
+              />
+              {alertMDP ? <Icon className="absolute right-4 p-3" name="exclamation-triangle" size={20} color={colors.orange} />: null}
+
+            </View>
+
+
+
             {/* Autres champs (Nom, Pseudo, Email, Mot de passe) similaires à Prénom */}
             {/* ... */}
 

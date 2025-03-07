@@ -206,4 +206,27 @@ const addPet = () => {
     );
 };
 
+const styles = StyleSheet.create({
+
+    modalBackground: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalContainer: {
+        backgroundColor: 'white',
+        padding: 20,
+        borderRadius: 10,
+        width: 300,
+        alignItems: 'center',
+    },
+    modalButtons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 20,
+        width: '100%',
+    },
+});
+
 export default addPet;
