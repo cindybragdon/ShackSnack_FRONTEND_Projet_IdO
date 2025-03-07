@@ -7,8 +7,7 @@ import { WebView } from 'react-native-webview';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCurrentDeepLink } from '../../utils/useDeepLink';
 import { Picker } from '@react-native-picker/picker';
-import { createFeedingLog, getUser, getUserDevice } from '../../lib/axios';
-import { getAnimals } from '../../lib/axios'; // Fonction pour récupérer la liste des animaux depuis l'API
+import { createFeedingLog, getUser, getUserDevice, getAnimals } from '../../lib/axios';
 import axios from 'axios'; // Librairie pour effectuer des requêtes HTTP
 
 // Définition de la largeur des boutons pour s'adapter à l'écran
