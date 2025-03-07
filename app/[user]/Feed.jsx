@@ -7,7 +7,7 @@ import { WebView } from 'react-native-webview';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCurrentDeepLink } from '../../utils/useDeepLink';
 import { Picker } from '@react-native-picker/picker';
-import { createFeedingLog, getAnimals, getUser } from '../../lib/axios'; // Fonction pour récupérer la liste des animaux depuis l'API
+import { createFeedingLog, getUser, getUserDevice, getAnimals } from '../../lib/axios';
 import axios from 'axios'; // Librairie pour effectuer des requêtes HTTP
 
 // Définition de la largeur des boutons pour s'adapter à l'écran
@@ -82,17 +82,13 @@ const Feed = () => {
                     }
                 });
                 const user = await getUser()
-                console.log(user.devices);
-                if(user.devices) {
-                    await axios.post(`http://${raspberryIp}:5000/device_settings`, {
-                        device:user.devices[0],
-                    }, {
-                        headers: {
-                            'Content-Type': 'application/json',
-                        }
-                    });
-
-                    await createFeedingLog(selectedAnimal._id, user.devices[0]._id, "Dry food", duration);
+                const device = await getUserDevice()
+                if(device) {
+                    console.log(device)
+                    console.log(selectedAnimal)
+                    console.log(selectedAnimal._id)
+                    console.log(device._id)
+                    await createFeedingLog(selectedAnimal._id, device._id, "Dry Food", duration);
                 }
                 console.log(`L'animal ${selectedAnimal.name} est nourri durant ${duration} secondes.`);
             } catch (error) {
