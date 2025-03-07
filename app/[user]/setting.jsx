@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Alert, Modal, Button, StyleSheet, Switch } from 'react-native';
+
 import { useTheme } from "../../contexts/ThemeContext"; // Importation du contexte de thème
 import { color } from "../../assets/color"; // Importation des couleurs du projet
 import DateTimePicker from '@react-native-community/datetimepicker'; // Importation du sélecteur de date et heure
@@ -50,17 +51,20 @@ const Setting = () => {
         {/* Mode Sombre */}
         <View style={[styles.settingRow, { borderBottomColor: colors.black }]}>
           <Text style={[styles.settingText, { color: colors.black }]}>🌙 Mode sombre</Text>
+
           <Switch value={darkModeEnabled} onValueChange={handleToggleTheme} /> {/* Switch pour basculer le mode sombre */}
         </View>
 
         {/* Rappel */}
         <View style={[styles.settingRow, { borderBottomColor: colors.black }]}>
           <Text style={[styles.settingText, { color: colors.black }]}>⏰ Ajouter un rappel</Text>
+
           <Switch value={reminderEnabled} onValueChange={toggleReminder} /> {/* Switch pour activer/désactiver le rappel */}
         </View>
       </View>
 
       {/* Choix de l'heure pour le rappel */}
+
       {modalVisible && ( // Si le modal est visible, afficher le sélecteur de date et heure
         <Modal transparent animationType="slide" visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
           <View style={styles.modalContainer}>
@@ -70,6 +74,7 @@ const Setting = () => {
                 value={selectedDate}
                 mode="datetime"
                 display="default"
+
                 onChange={(event, date) => date && setSelectedDate(date)} // Mise à jour de la date sélectionnée
               />
               <Button title="✔️ Valider" onPress={() => setModalVisible(false)} /> {/* Bouton pour valider la date */}
