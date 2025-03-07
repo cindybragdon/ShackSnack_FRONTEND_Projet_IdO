@@ -8,8 +8,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCurrentDeepLink } from '../../utils/useDeepLink';
 import { Picker } from '@react-native-picker/picker';
 import { createFeedingLog, getAnimals, getUser } from '../../lib/axios'; // Assurez-vous que cette fonction est bien importée
-import axios from 'axios'; // Importer axios pour la requête HTTP
+import { getAnimals } from '../../lib/axios'; // Fonction pour récupérer la liste des animaux depuis l'API
+import axios from 'axios'; // Librairie pour effectuer des requêtes HTTP
 
+// Définition de la largeur des boutons pour s'adapter à l'écran
 const WIDTH_BTN = Dimensions.get('window').width - 56;
 
 const Feed = () => {
@@ -17,14 +19,15 @@ const Feed = () => {
     const router = useRouter();
     const colors = color[theme];
 
+    // États pour stocker l'IP du Raspberry Pi, l'animal sélectionné et la liste des animaux
     const [raspberryIp, setRaspberryIp] = useState("");
-    const [selectedAnimal, setSelectedAnimal] = useState(""); // ID de l'animal sélectionné
-    const [animals, setAnimals] = useState([]); // Liste des animaux
-    const [animalData, setAnimalData] = useState(null); // Données de l'animal sélectionné (y compris number_sec_treats)
+    const [selectedAnimal, setSelectedAnimal] = useState(""); // Contient l'ID de l'animal sélectionné
+    const [animals, setAnimals] = useState([]); // Liste des animaux disponibles
+    const [animalData, setAnimalData] = useState(null); // Données détaillées de l'animal sélectionné
 
     const deepLink = useCurrentDeepLink();
 
-    // Charger l'IP depuis AsyncStorage
+    // Chargement de l'IP stockée dans AsyncStorage au démarrage de l'application
     useEffect(() => {
         const loadIp = async () => {
             try {
@@ -39,11 +42,11 @@ const Feed = () => {
         loadIp();
     }, []);
 
-    // Charger les animaux depuis l'API
+    // Chargement de la liste des animaux depuis l'API
     useEffect(() => {
         const loadAnimals = async () => {
             try {
-                const animalsList = await getAnimals(); // Récupérer les animaux via votre API
+                const animalsList = await getAnimals();
                 if (animalsList) {
                     setAnimals(animalsList);
                 }
@@ -54,15 +57,7 @@ const Feed = () => {
         loadAnimals();
     }, []);
 
-    // Mettre à jour les données de l'animal sélectionné lorsque l'ID de l'animal change
-    //useEffect(() => {
-    //    if (selectedAnimalId) {
-    //        const selectedAnimal = animals.find(animal => animal.id === selectedAnimalId);
-    //        setAnimalData(selectedAnimal);
-    //    }
-    //}, [selectedAnimalId, animals]);
-
-    // Sauvegarder l'IP dans AsyncStorage
+    // Sauvegarde de l'IP du Raspberry Pi dans AsyncStorage
     const saveIp = async () => {
         try {
             await AsyncStorage.setItem('raspberryIp', raspberryIp);
@@ -72,14 +67,14 @@ const Feed = () => {
         }
     };
 
-    // Effectuer la requête HTTP pour nourrir l'animal
+    // Fonction pour envoyer une requête HTTP et nourrir l'animal sélectionné
     const feedAnimal = async () => {
         console.log(selectedAnimal);
         
+        // Vérifie si l'IP du Raspberry Pi et un animal ont bien été sélectionnés
         if (raspberryIp && selectedAnimal) {
-            
             try {
-                const duration = selectedAnimal.number_sec_treats; // Récupérer la durée de l'animal sélectionné
+                const duration = selectedAnimal.number_sec_treats; // Récupération de la durée de distribution des friandises
                 await axios.post(`http://${raspberryIp}:5000/feed`, {
                     duration: duration,
                 }, {
@@ -112,32 +107,32 @@ const Feed = () => {
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{ backgroundColor: colors.background_w }}>
             <View className="items-center">
+                {/* Titre de la page */}
                 <Text className="text-center uppercase font-bold text-3xl mb-[-20]" style={{ color: colors.orange }}>Nourrir </Text>
                 <Text className="text-center font-bold text-6xl mb-[-20]" style={{ color: colors.black, fontFamily: 'cookie' }}>votre</Text>
                 <Text className="text-center uppercase font-bold text-3xl mb-[20]" style={{ color: colors.orange }}> Animal </Text>
 
-                {/* WebView pour afficher le flux vidéo */}
+                {/* Affichage du flux vidéo du Raspberry Pi via WebView */}
                 <View className="h-[300] w-[300] mb-[30]" style={{ backgroundColor: colors.black }}>
                     <Text className="text-center py-[10]" style={{ color: colors.background_w }}> ₍^. .^₎⟆</Text>
                     {raspberryIp ? (
                         <WebView
-                            key={raspberryIp}
+                            key={raspberryIp} // Force le rechargement du WebView si l'IP change
                             source={{ uri: `http://${raspberryIp}:5001/video_feed` }}
                             style={{ flex: 1 }}
                         />
                     ) : (
                         <Text className="text-center" style={{ color: colors.background_w }}>
-                            Entrez l'ip du Raspberry Pi pour voir la caméra
+                            Entrez l'IP du Raspberry Pi pour voir la caméra
                         </Text>
                     )}
                 </View>
 
-                {/* Picker pour sélectionner un animal */}
+                {/* Sélection d'un animal via un Picker */}
                 <Picker
                     selectedValue={selectedAnimal}
-                    onValueChange={(itemValue) => setSelectedAnimal(itemValue)} // Mettre à jour l'ID de l'animal sélectionné
+                    onValueChange={(itemValue) => setSelectedAnimal(itemValue)}
                     style={{
-
                         width: WIDTH_BTN,
                         backgroundColor: colors.background_w,
                         color: colors.black,
@@ -153,9 +148,9 @@ const Feed = () => {
                     ))}
                 </Picker>
 
-                {/* Bouton pour nourrir l'animal */}
+                {/* Bouton pour nourrir l'animal sélectionné */}
                 <TouchableOpacity
-                    onPress={feedAnimal} // Appel à la fonction pour nourrir l'animal
+                    onPress={feedAnimal}
                     className="rounded-xl mb-[20]"
                     style={{ backgroundColor: colors.blue, width: WIDTH_BTN }}
                 >
@@ -164,7 +159,7 @@ const Feed = () => {
                     </Text>
                 </TouchableOpacity>
 
-                {/* Champ pour entrer l'IP */}
+                {/* Champ de saisie pour l'IP du Raspberry Pi */}
                 <TextInput
                     style={{
                         height: 40,
@@ -183,7 +178,7 @@ const Feed = () => {
                     onChangeText={setRaspberryIp}
                 />
 
-                {/* Bouton pour sauvegarder l'IP */}
+                {/* Bouton pour sauvegarder l'IP du Raspberry Pi */}
                 <TouchableOpacity
                     onPress={saveIp}
                     className="rounded-xl mb-[20]"

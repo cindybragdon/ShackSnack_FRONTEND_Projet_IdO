@@ -52,6 +52,7 @@ const Layout = () => {
         <Drawer.Screen name="camera1/index" options={{ headerShown: false, drawerItemStyle: { display: 'none' } }} />
         <Drawer.Screen name="[user]/statsScreen" options={{ title: "Statistiques" }} />
         <Drawer.Screen name="[user]/Feed" options={{ title: "Nourrir un animal" }} />
+        <Drawer.Screen name="[user]/holiday" options={{ title: "Mode vacances" }} />
       </Drawer>
     </GestureHandlerRootView>
   );
