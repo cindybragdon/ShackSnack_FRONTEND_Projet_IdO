@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, Switch, Button, FlatList, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, Switch, Button, FlatList, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
 import { getUser, updateSubdocument, createSubdocument } from "../../lib/axios";
+import { color } from '../../assets/color'; // Importation de la palette de couleurs personnalisée
+import { useTheme } from '../../contexts/ThemeContext';
+const WIDTH_BTN = Dimensions.get('window').width -56;
 
 const DeviceSettingsPage = () => {
   const [device, setDevice] = useState(null);
+  const { theme } = useTheme();
+  const colors = color[theme];  // Application des couleurs du thème
+
   const [newAlarm, setNewAlarm] = useState({ name: "", hour: "", minute: "", days: [
-    { day: "Monday", isSelected: false },
-    { day: "Tuesday", isSelected: false },
-    { day: "Wednesday", isSelected: false },
-    { day: "Thursday", isSelected: false },
-    { day: "Friday", isSelected: false },
-    { day: "Saturday", isSelected: false },
-    { day: "Sunday", isSelected: false }
+    { day: "Lundi", isSelected: false },
+    { day: "Mardi", isSelected: false },
+    { day: "Mercredi", isSelected: false },
+    { day: "Jeudi", isSelected: false },
+    { day: "Vendredi", isSelected: false },
+    { day: "Samedi", isSelected: false },
+    { day: "Dimanche", isSelected: false }
   ]});
 
   useEffect(() => {
@@ -69,38 +75,45 @@ const DeviceSettingsPage = () => {
   };
 
   return (
-    <View style={{ padding: 20 }}>
-      <Text style={{ fontSize: 20, fontWeight: "bold" }}>Device Settings</Text>
-      <TextInput placeholder="Device Name" value={device?.name || ""} onChangeText={(text) => handleDeviceChange("name", text)} />
-      <TextInput placeholder="MAC Address" value={device?.mac_adress || ""} onChangeText={(text) => handleDeviceChange("mac_adress", text)} />
+    <View className="items-center flex-1"style={{ backgroundColor: colors.background_w }}>
+                  <Text className="font-bold text-3xl mb-[-20]" style={{ color: colors.orange }}>
+                mode
+            </Text>
+            <Text className="text-7xl text-center tracking-[4px]" style={{ fontFamily: 'cookie', color: colors.black }}>
+                vacances
+            </Text>
+      <Text style={{ fontSize: 20, fontWeight: "bold" , color: colors.black}}>Paramètres de l'appareil</Text>
+      <TextInput className="text-xl" placeholder="Nom de l'appareil" value={device?.name || ""} onChangeText={(text) => handleDeviceChange("name", text)} />
+      <TextInput className="text-xl" placeholder="Addresse MAC" value={device?.mac_adress || ""} onChangeText={(text) => handleDeviceChange("mac_adress", text)} />
       
       <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <Text>Vacation Mode Active</Text>
+        <Text className="">Mode vacances Activé     </Text>
         <Switch value={device?.isVacationModeActive || false} onValueChange={(value) => handleSwitchChange("isVacationModeActive", value)} />
       </View>
-      <TextInput placeholder="Vacation Feeding Time" keyboardType="numeric" value={String(device?.vacationFeedingTime || 2)} onChangeText={(text) => handleDeviceChange("vacationFeedingTime", text)} />
+      <TextInput className="mb-[40]"placeholder="Vacation Feeding Time" keyboardType="numeric" value={String(device?.vacationFeedingTime || 2)} onChangeText={(text) => handleDeviceChange("vacationFeedingTime", text)} />
       
-      <Button title="Save Device" onPress={saveDevice} />
+      <TouchableOpacity className="py-4 rounded-xl mb-[30]" style={{backgroundColor: colors.orange, width: WIDTH_BTN}}onPress={saveDevice} > <Text className="text-center"> Sauvegarder </Text> </TouchableOpacity>
       
-      <Text style={{ fontSize: 18, marginTop: 20 }}>Alarms</Text>
-      <TextInput placeholder="Alarm Name" value={newAlarm.name} onChangeText={(text) => handleAlarmChange("name", text)} />
-      <TextInput placeholder="Hour" keyboardType="numeric" value={newAlarm.hour} onChangeText={(text) => handleAlarmChange("hour", text)} />
-      <TextInput placeholder="Minute" keyboardType="numeric" value={newAlarm.minute} onChangeText={(text) => handleAlarmChange("minute", text)} />
+      <Text style={{ fontSize: 20, fontWeight: "bold" , color: colors.black}}> Paramètres des alarmes</Text>
+      <TextInput className="text-xl"placeholder="Nom de l'alarme" value={newAlarm.name} onChangeText={(text) => handleAlarmChange("name", text)} />
+      <TextInput className="text-xl"placeholder="Heure" keyboardType="numeric" value={newAlarm.hour} onChangeText={(text) => handleAlarmChange("hour", text)} />
+      <TextInput className="text-xl mb-[20]"placeholder="Minute" keyboardType="numeric" value={newAlarm.minute} onChangeText={(text) => handleAlarmChange("minute", text)} />
       
-      <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+      <View className="items-center flex-1 "style={{ flexDirection: "row", flexWrap: "wrap", width: WIDTH_BTN }}>
         {newAlarm.days.map((day) => (
-          <TouchableOpacity key={day.day} onPress={() => handleDayToggle(day.day)} style={{ margin: 5, padding: 10, backgroundColor: day.isSelected ? "blue" : "grey" }}>
+          <TouchableOpacity className="rounded-xl"key={day.day} onPress={() => handleDayToggle(day.day)} style={{ margin: 5, padding: 10, backgroundColor: day.isSelected ? "lightblue" : "grey" }}>
             <Text style={{ color: "white" }}>{day.day}</Text>
           </TouchableOpacity>
         ))}
       </View>
-      <Button title="Add Alarm" onPress={addAlarm} />
+      <TouchableOpacity className="py-4 rounded-xl mb-[30]" style={{backgroundColor: colors.orange, width: WIDTH_BTN}}onPress={addAlarm} > <Text className="text-center"> Ajouter un alarme </Text> </TouchableOpacity>
+
 
       <FlatList
         data={device?.feedingTimes || []}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
-          <View style={{ flexDirection: "row", justifyContent: "space-between", marginVertical: 5 }}>
+          <View  style={{ flexDirection: "row", justifyContent: "space-between", marginVertical: 5 }}>
             <Text>{item.name} - {item.hour}:{item.minute} ({item.days.filter(d => d.isSelected).map(d => d.day).join(", ")})</Text>
             <Button title="Remove" onPress={() => removeAlarm(index)} />
           </View>
